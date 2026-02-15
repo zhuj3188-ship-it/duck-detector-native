@@ -3,6 +3,7 @@
 #include <sstream>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <dirent.h>
 
 namespace selinux {
 
@@ -45,10 +46,33 @@ bool hasSuspiciousSelfContext() {
 std::vector<std::string> scanProcessSelinuxContexts() {
     std::vector<std::string> suspicious;
     
-    // Scan /proc for suspicious process contexts
-    // This is a simplified implementation
-    // Full implementation would iterate through /proc/*/attr/current
+    DIR* dir = opendir("/proc");
+    if (!dir) return suspicious;
     
+    struct dirent* entry;
+    while ((entry = readdir(dir)) != nullptr) {
+        // Check if directory name is numeric (PID)
+        if (entry->d_type != DT_DIR) continue;
+        
+        std::string pid = entry->d_name;
+        if (pid.empty() || !isdigit(pid[0])) continue;
+        
+        std::string context_path = "/proc/" + pid + "/attr/current";
+        std::ifstream file(context_path);
+        if (!file.is_open()) continue;
+        
+        std::string context;
+        std::getline(file, context);
+        
+        // Check for suspicious contexts
+        if (context.find("u:r:su:") != std::string::npos ||
+            context.find("u:r:magisk:") != std::string::npos ||
+            context.find("u:r:init:") != std::string::npos) {
+            suspicious.push_back("PID " + pid + ": " + context);
+        }
+    }
+    
+    closedir(dir);
     return suspicious;
 }
 
@@ -76,7 +100,16 @@ std::string getSelinuxDetectionDetails() {
     std::ostringstream details;
     details << "SELinux Context: " << getSelfSelinuxContext() << "\n";
     details << "Enforce Status: " << (getSelinuxEnforceStatus() ? "Enforcing" : "Permissive") << "\n";
-    details << "Suspicious Context: " << (hasSuspiciousSelfContext() ? "Yes" : "No");
+    details << "Suspicious Context: " << (hasSuspiciousSelfContext() ? "Yes" : "No") << "\n";
+    
+    auto findings = scanProcessSelinuxContexts();
+    if (!findings.empty()) {
+        details << "Suspicious Processes:\n";
+        for (const auto& finding : findings) {
+            details << "  " << finding << "\n";
+        }
+    }
+    
     return details.str();
 }
 

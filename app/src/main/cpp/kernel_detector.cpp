@@ -1,7 +1,9 @@
 #include "native_detector.h"
 #include <fstream>
+#include <sstream>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <dirent.h>
 
 namespace kernel {
 
@@ -24,9 +26,20 @@ bool detectKernelSu() {
     if (version.is_open()) {
         std::string line;
         std::getline(version, line);
-        if (line.find("KernelSU") != std::string::npos) {
+        if (line.find("KernelSU") != std::string::npos ||
+            line.find("kernelsu") != std::string::npos) {
             return true;
         }
+    }
+    
+    // Check for KernelSU manager app
+    if (stat("/data/data/me.weishu.kernelsu", &st) == 0) {
+        return true;
+    }
+    
+    // Check for ksud binary
+    if (stat("/data/adb/ksud", &st) == 0) {
+        return true;
     }
     
     return false;
@@ -46,9 +59,20 @@ bool detectAPatch() {
     if (version.is_open()) {
         std::string line;
         std::getline(version, line);
-        if (line.find("APatch") != std::string::npos) {
+        if (line.find("APatch") != std::string::npos ||
+            line.find("apatch") != std::string::npos) {
             return true;
         }
+    }
+    
+    // Check for APatch manager app
+    if (stat("/data/data/me.bmax.apatch", &st) == 0) {
+        return true;
+    }
+    
+    // Check for apd binary
+    if (stat("/data/adb/apd", &st) == 0) {
+        return true;
     }
     
     return false;
