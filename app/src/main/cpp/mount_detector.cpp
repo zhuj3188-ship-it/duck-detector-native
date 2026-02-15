@@ -13,5 +13,5 @@ namespace mount {
     bool detectMountNamespaceAnomaly() { return false; }
     bool detectDataAdbMounts() { return false; }
     std::vector<std::string> getMountFindings() { return {}; }
-    bool isMountTypeDetected(const std::string& type) { return false; }
+    bool isMountTypeDetected(const std::string& type) { (void)type; return false; }
 }
