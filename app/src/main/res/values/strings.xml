@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Duck Detector</string>
+    <string name="version">版本 1.9.13-beta (103)</string>
+    
+    <!-- Onboarding Dialog -->
+    <string name="onboarding_title">使用须知</string>
+    <string name="onboarding_subtitle">几点建议，助您明智地使用检测器</string>
+    <string name="onboarding_item1_title">检测器并非绝对标准</string>
+    <string name="onboarding_item1_desc">检测结果仅供参考，请在实际应用中验证。不要盲目迷信任何检测器</string>
+    <string name="onboarding_item2_title">提供完整信息</string>
+    <string name="onboarding_item2_desc">寻求帮助时，请展示你的模块列表和设备信息。信息不完整可能会让他人难以帮助你</string>
+    <string name="onboarding_item3_title">不要仅凭截图</string>
+    <string name="onboarding_item3_desc">仅凭截图是不够的：请提供上下文、描述你的配置以及你已尝试过的方法</string>
+    <string name="onboarding_footer">点击每一项以确认已阅读</string>
+    <string name="onboarding_button">知道了</string>
+    
+    <!-- Beta Warning Dialog -->
+    <string name="beta_title">测试版本</string>
+    <string name="beta_subtitle">您正在使用测试版本</string>
+    <string name="beta_warning1">此版本可能不稳定且包含错误</string>
+    <string name="beta_warning2">功能可能无法按预期工作</string>
+    <string name="beta_footer">请反馈您遇到的任何问题</string>
+    <string name="beta_button">我已知晓</string>
+    
+    <!-- Issues Detected Dialog -->
+    <string name="issues_title">检测到问题</string>
+    <string name="issues_subtitle">在寻求帮助之前，请记住</string>
+    <string name="issues_item1_title">提供完整信息</string>
+    <string name="issues_item1_desc">寻求帮助时，请提供你的模块列表、设备信息以及你已尝试的方法。别人没有义务帮助你——信息不完整只会浪费大家的时间。</string>
+    <string name="issues_item2_title">实践高于检测</string>
+    <string name="issues_item2_desc">检测器不是唯一标准，实践是检验真理的唯一标志。如果你的应用运行正常，检测结果可能并不重要。</string>
+    <string name="issues_item3_title">谨慎使用Root软件</string>
+    <string name="issues_item3_desc">不要轻易使用未知的需要su权限或修改系统分区的软件。这可能会损坏你的系统：别鸡巴乱下载一键隐藏和烧录，出问题了没人哭的地方</string>
+    <string name="issues_tutorial_title">浏览基础教程</string>
+    <string name="issues_tutorial_desc">新手入门？查看我们的入门指南，快速了解基础知识。</string>
+    <string name="issues_footer">冷静分析后再寻求帮助</string>
+    <string name="issues_button">我知道了</string>
+    
+    <!-- Main Screen -->
+    <string name="scan_button">开始扫描</string>
+    <string name="scanning">正在扫描...</string>
+    <string name="scanning_item">正在检测 %1$s...</string>
+    <string name="scan_progress">%1$d / %2$d 已完成</string>
+    <string name="scan_disclaimer">实践是检验真理的唯一标准，检测器仅供参考。</string>
+    <string name="scan_time">%1$.1f秒</string>
+    
+    <!-- Detection Results -->
+    <string name="detection_results">检测结果</string>
+    <string name="lsposed_xposed">LSPosed/Xposed</string>
+    <string name="xposed_found">%1$d Xposed/LSPosed indicator(s) found</string>
+    <string name="hook_framework">Hook 框架状态</string>
+    <string name="hook_detected">检测到 Xposed</string>
+    <string name="hook_active">Hook 框架活跃</string>
+    
+    <!-- Settings -->
+    <string name="settings">设置</string>
+    <string name="settings_subtitle">配置您的偏好设置</string>
+    <string name="network_access">网络访问</string>
+    <string name="network_desc">连接 Google 检查证书吊销状态</string>
+    <string name="use_proxy">使用代理服务器</string>
+    <string name="proxy_desc">在无法访问 Google 的地区使用代理服务器</string>
+    <string name="language">语言</string>
+    <string name="follow_system">跟随系统</string>
+    <string name="cert_revocation">证书吊销列表</string>
+    <string name="cert_valid">缓存有效</string>
+    <string name="cert_count">%1$d 个已吊销证书</string>
+    <string name="last_update">上次更新</string>
+    <string name="expire_time">过期时间</string>
+    <string name="check_update">检查更新</string>
+    <string name="current_version">当前版本</string>
+    <string name="about">关于</string>
+    <string name="app_developer">开发者</string>
+    <string name="developer_name">Eltavine</string>
+    <string name="app_description">Duck Detector是一个纯粹、Momo 的简单检测工具。</string>
+    <string name="special_thanks">特别感谢</string>
+    
+    <!-- Common -->
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="close">关闭</string>
+</resources>
