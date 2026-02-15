@@ -62,14 +62,10 @@ namespace mount {
     
     bool detectMountNamespaceAnomaly() {
         // Check if mount namespace is different from init
-        std::ifstream self("/proc/self/ns/mnt");
-        std::ifstream init("/proc/1/ns/mnt");
-        
-        if (!self.is_open() || !init.is_open()) return false;
-        
         struct stat self_stat, init_stat;
-        if (fstat(fileno(self._M_filebuf._M_file.file()), &self_stat) != 0 ||
-            fstat(fileno(init._M_filebuf._M_file.file()), &init_stat) != 0) {
+        
+        if (stat("/proc/self/ns/mnt", &self_stat) != 0 ||
+            stat("/proc/1/ns/mnt", &init_stat) != 0) {
             return false;
         }
         
