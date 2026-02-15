@@ -1,4 +1,4 @@
-name: Android CI
+name: Android CI Build
 
 on:
   push:
@@ -20,59 +20,34 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
     
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
+    
+    - name: Install NDK
+      run: |
+        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "ndk;26.1.10909125"
+        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "cmake;3.22.1"
+    
+    - name: Cache Gradle packages
+      uses: actions/cache@v3
       with:
-        api-level: 34
-        build-tools: 34.0.0
-        cmake-version: 3.22.1
-        ndk-version: 26.1.10909125
-
-         name: Accept Android SDK licenses
-      run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
-
-    name: Grant execute permission for gradlew
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    
+    - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     
-    - name: Build Debug APK
-      run: ./gradlew assembleDebug
+    - name: Build with Gradle
+      run: ./gradlew assembleDebug --stacktrace
     
-    - name: Upload Debug APK
+    - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: duck-detector-debug
-        path: app/build/outputs/apk/debug/app-debug.apk
+        name: duck-detector-debug-apk
+        path: app/build/outputs/apk/debug/*.apk
         retention-days: 30
-    
-    - name: Create Release
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: v1.0.${{ github.run_number }}
-        name: Duck Detector v1.0.${{ github.run_number }}
-        body: |
-          ## Duck Detector - 自动构建版本
-          
-          基于原版Duck Detector深度分析重建的原生Android Root环境检测应用。
-          
-          ### 安装方法
-          1. 下载下方的 `duck-detector-debug.apk` 文件
-          2. 在Android手机上安装（需要允许安装未知来源应用）
-          3. 打开应用开始使用
-          
-          ### 功能特性
-          - ✅ SELinux上下文检测
-          - ✅ 内核级Root检测
-          - ✅ Zygisk注入检测
-          - ✅ LSPosed/Xposed检测
-          - ✅ 系统完整性验证
-          
-          **注意**：本项目用于学习研究，检测结果仅供参考。
-        files: |
-          app/build/outputs/apk/debug/app-debug.apk
-        draft: false
-        prerelease: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
