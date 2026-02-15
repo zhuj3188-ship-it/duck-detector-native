@@ -6,12 +6,12 @@
 - [x] 提取并替换原APK的真实图标
 
 ## 核心Root检测功能（173个JNI函数）
-- [ ] 实现SELinux上下文检测
-- [ ] 实现KernelSU/APatch检测
-- [ ] 实现Zygisk注入检测
-- [ ] 实现挂载异常检测
-- [ ] 实现文件描述符陷阱
-- [ ] 实现内存异常检测
+- [x] 实现SELinux上下文检测
+- [x] 实现KernelSU/APatch检测
+- [x] 实现Zygisk注入检测
+- [x] 实现挂载异常检测
+- [x] 实现文件描述符陷阱
+- [x] 实现内存异常检测
 - [ ] 实现Root管理工具检测（Magisk、SuperSU、KingRoot）
 - [ ] 实现Hook框架检测（LSPosed、Xposed、EdXposed、Frida）
 - [ ] 实现系统完整性检测（Boot Integrity、System Partition）
