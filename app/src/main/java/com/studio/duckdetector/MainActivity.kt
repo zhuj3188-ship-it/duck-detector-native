@@ -53,25 +53,77 @@ class MainActivity : AppCompatActivity() {
     
     private fun startDetection() {
         lifecycleScope.launch {
+            // Hide scan button
+            binding.scanButton.visibility = android.view.View.GONE
+            
+            // Show scanning UI
+            binding.scanIconContainer.visibility = android.view.View.VISIBLE
+            binding.scanTitle.visibility = android.view.View.VISIBLE
+            binding.currentItem.visibility = android.view.View.VISIBLE
             binding.progressBar.visibility = android.view.View.VISIBLE
-            binding.scanButton.isEnabled = false
+            binding.progressPercentage.visibility = android.view.View.VISIBLE
+            binding.progressCount.visibility = android.view.View.VISIBLE
+            
+            // Start rotation animation
+            startRotationAnimation()
             
             val results = detectionManager.performDetection { progress, current, total ->
                 runOnUiThread {
                     binding.progressBar.progress = progress
-                    binding.progressText.text = "检测中... $current / $total"
+                    binding.progressPercentage.text = "$progress%"
+                    binding.progressCount.text = "$current / $total 已完成"
+                    binding.currentItem.text = "正在检测..."
                 }
             }
             
-            binding.progressBar.visibility = android.view.View.GONE
+            // Stop rotation animation
+            binding.scanIcon.clearAnimation()
+            
+            // Show scan button again
+            binding.scanButton.visibility = android.view.View.VISIBLE
             binding.scanButton.isEnabled = true
             
             displayResults(results)
         }
     }
     
+    private fun startRotationAnimation() {
+        val rotateAnimation = android.view.animation.RotateAnimation(
+            0f, 360f,
+            android.view.animation.Animation.RELATIVE_TO_SELF, 0.5f,
+            android.view.animation.Animation.RELATIVE_TO_SELF, 0.5f
+        )
+        rotateAnimation.duration = 1000
+        rotateAnimation.repeatCount = android.view.animation.Animation.INFINITE
+        rotateAnimation.interpolator = android.view.animation.LinearInterpolator()
+        binding.scanIcon.startAnimation(rotateAnimation)
+    }
+    
     private fun displayResults(results: List<DetectionResult>) {
-        // Display detection results
-        // TODO: Implement results display
+        // Hide scanning UI
+        binding.scanIconContainer.visibility = android.view.View.GONE
+        binding.scanTitle.visibility = android.view.View.GONE
+        binding.currentItem.visibility = android.view.View.GONE
+        binding.progressBar.visibility = android.view.View.GONE
+        binding.progressPercentage.visibility = android.view.View.GONE
+        binding.progressCount.visibility = android.view.View.GONE
+        
+        // Show results
+        binding.resultsContainer.visibility = android.view.View.VISIBLE
+        binding.resultsContainer.removeAllViews()
+        
+        results.forEach { result ->
+            val resultCard = createResultCard(result)
+            binding.resultsContainer.addView(resultCard)
+        }
+        
+        // Show scan time
+        binding.scanTime.visibility = android.view.View.VISIBLE
+    }
+    
+    private fun createResultCard(result: DetectionResult): android.view.View {
+        val cardView = layoutInflater.inflate(R.layout.item_detection_result, binding.resultsContainer, false)
+        // TODO: Bind result data to card view
+        return cardView
     }
 }
